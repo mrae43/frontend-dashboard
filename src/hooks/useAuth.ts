@@ -11,10 +11,13 @@ export function useAuth() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        const parsed = UserSchema.parse(JSON.parse(stored));
-        setUser(parsed);
-      } catch (error) {
-        console.error("Failed to parse user data:", error);
+        const parsed = JSON.parse(stored);
+        const validated = UserSchema.parse(parsed);
+        setUser(validated);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error('Invalid stored user:', err.message);
+        }
         localStorage.removeItem(STORAGE_KEY);
       }
     }
