@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { LayoutDashboard, PieChart, Settings, Users, Menu, Bell, User, LogOut, ChevronDown } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import LoginForm from '../components/LoginForm';
+import { useAuthContext } from '../contexts/AuthContext';
 
 export default function DashboardLayout() {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuthContext();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +26,15 @@ export default function DashboardLayout() {
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
-  if (!user) return <LoginForm />;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-slate-50">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 font-sans">
