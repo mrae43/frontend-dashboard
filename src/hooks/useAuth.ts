@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LoginSchema, UserSchema, type User } from "../types";
+import { LoginSchema, UserSchema, type User, type LoginFormData } from "../types";
 
 const STORAGE_KEY = 'food_dashboard_user';
 
@@ -21,8 +21,8 @@ export function useAuth() {
     setLoading(false);
   }, [])
 
-  const login = (user: User) => {
-    const validatedUser = LoginSchema.parse(user);
+  const login = (credentials: LoginFormData) => {
+    const validatedUser = LoginSchema.parse(credentials);
     const mockUser: User = {
       id: 1,
       email: validatedUser.email,
@@ -32,7 +32,6 @@ export function useAuth() {
     }
     localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
     setUser(mockUser);
-
   }
   
   const logout = () => {
