@@ -1,15 +1,20 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, PieChart, Settings, Users, Menu, Bell, User } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
+import LoginForm from '../components/LoginForm';
 
 export default function DashboardLayout() {
   const location = useLocation();
-  
+  const { user, logout } = useAuth();
+
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Analytics', path: '/analytics', icon: PieChart },
     { name: 'Customers', path: '/customers', icon: Users },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
+
+  if (!user) return <LoginForm />;
 
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 font-sans">
@@ -58,7 +63,11 @@ export default function DashboardLayout() {
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
               <Bell className="w-5 h-5" />
             </button>
-            <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-medium cursor-pointer hover:bg-blue-200 transition-colors border border-blue-200">
+            <div 
+              onClick={logout}
+              title="Click to logout"
+              className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-medium cursor-pointer hover:bg-blue-200 transition-colors border border-blue-200"
+            >
               <User className="w-5 h-5" />
             </div>
           </div>
