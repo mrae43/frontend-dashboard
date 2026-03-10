@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import type { UserRole } from '../types';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 
 export default function LoginForm() {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('admin@fooddash.com');
   const [password, setPassword] = useState('password123');
   const [role, setRole] = useState<UserRole>('admin');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -20,6 +22,7 @@ export default function LoginForm() {
         password,
         role, 
       });
+      navigate('/');
     } catch (err: any) {
       if (err.issues && err.issues.length > 0) {
         setError(err.issues[0].message);
