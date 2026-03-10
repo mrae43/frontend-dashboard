@@ -6,6 +6,7 @@ const STORAGE_KEY = 'food_dashboard_user';
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -25,26 +26,41 @@ export function useAuth() {
   }, [])
 
   const login = (credentials: LoginFormData) => {
-    const validatedUser = LoginSchema.parse(credentials);
-    const mockUser: User = {
-      id: 1,
-      email: validatedUser.email,
-      token: 'mock-jwt-token-' + Date.now(),
-      isLoggedIn: true,
-      role: validatedUser.role || 'staff'
+    try {
+      const result = LoginSchema.safeParse(credentials);
+      if (!result.success) {
+        return { success: false, error: result.error };
+      }
+
+      const validated = result.data as LoginFormData;
+      const mockUser: User = {
+        id: 1,
+        email: validated.email,
+        token: `mock-jwt-${Date.now()}`,
+        isLoggedIn: true,
+        role: validated.role || 'staff',
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
+      setUser(mockUser);
+      setError(null);
+      return { success: true, user: mockUser };
+    } catch (err: unknown) {
+      const error = err instanceof Error ? err : new Error('Login failed');
+      return { success: false, error };
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
-    setUser(mockUser);
   }
   
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
+    setError(null);
   }
 
   return {
     user,
     loading,
+    error,
     login,
     logout
   }
