@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { LayoutDashboard, PieChart, Settings, Users, Menu, Bell, User, LogOut, ChevronDown } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import LoginForm from '../components/LoginForm';
+import { useAuthContext } from '../contexts/AuthContext';
 
 export default function DashboardLayout() {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuthContext();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +26,15 @@ export default function DashboardLayout() {
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
 
-  if (!user) return <LoginForm />;
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-slate-50">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 font-sans">
@@ -72,27 +79,46 @@ export default function DashboardLayout() {
              </h1>
           </div>
           <div className="flex items-center gap-4">
-            <button className="p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-full transition-colors relative">
+            {/* Notifications Bell */}
+            <button 
+              className="p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-full transition-colors relative group"
+              data-testid="notification-bell"
+              aria-label="Notifications"
+            >
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full"></span>
               <Bell className="w-5 h-5" />
             </button>
             {user && (
+              <span 
+                data-testid="user-role"
+                className="inline-flex items-center px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-medium capitalize"
+                aria-label={`User role: ${user.role}`}
+              >
+                {user.role}
+              </span>
+            )}
+            {/* User Dropdown */}
+            {user && (
               <div className="relative" ref={dropdownRef}>
-                {/* Avatar trigger */}
                 <button
+                  data-testid="user-avatar-trigger"
                   onClick={() => setDropdownOpen(prev => !prev)}
                   className="flex items-center gap-1.5 pl-1 pr-2 py-1 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors border border-blue-200 group"
+                  aria-label="User menu"
+                  aria-expanded={dropdownOpen}
+                  aria-haspopup="menu"
                 >
                   <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white">
                     <User className="w-4 h-4" />
                   </div>
                   <ChevronDown className={`w-3.5 h-3.5 text-blue-600 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
-
-                {/* Dropdown */}
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    {/* User info */}
+                  <div 
+                    className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                    role="menu"
+                    aria-labelledby="user-avatar-trigger"
+                  >
                     <div className="px-4 py-3 border-b border-slate-100">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white flex-shrink-0">
@@ -100,18 +126,14 @@ export default function DashboardLayout() {
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-semibold text-slate-800 truncate">{user.email}</p>
-                          <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-blue-50 text-blue-700 text-xs font-medium capitalize mt-0.5">
-                            {user.role}
-                          </span>
                         </div>
                       </div>
                     </div>
-
-                    {/* Sign out */}
                     <div className="px-2 pt-2">
                       <button
                         onClick={() => { setDropdownOpen(false); logout(); }}
                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-rose-600 hover:bg-rose-50 transition-colors text-sm font-medium"
+                        role="menuitem"
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
@@ -123,7 +145,6 @@ export default function DashboardLayout() {
             )}
           </div>
         </header>
-
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-8 bg-slate-50/50">
           <div className="max-w-7xl mx-auto">

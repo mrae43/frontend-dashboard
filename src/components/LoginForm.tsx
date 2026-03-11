@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuthContext } from '../contexts/AuthContext';
 import type { UserRole } from '../types';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
-  const { login } = useAuth();
+  const { user, loading, login } = useAuthContext();
   const navigate = useNavigate();
   const [email, setEmail] = useState('admin@fooddash.com');
   const [password, setPassword] = useState('password123');
   const [role, setRole] = useState<UserRole>('admin');
   const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    if (!loading && user) {
+      navigate('/', { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -70,6 +84,7 @@ export default function LoginForm() {
                 <Mail className="w-5 h-5" />
               </div>
               <input
+                name="email"
                 id="email"
                 type="email"
                 value={email}
@@ -90,6 +105,7 @@ export default function LoginForm() {
                 <Lock className="w-5 h-5" />
               </div>
               <input
+                name="password"
                 id="password"
                 type="password"
                 value={password}
