@@ -2,10 +2,16 @@ import { createContext, useContext, type ReactNode } from "react";
 import { type User, type LoginFormData } from "../types";
 import { useAuth } from "../hooks/useAuth";
 
+export interface LoginResult {
+  success: boolean;
+  user?: User;
+  error?: any;
+}
+
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
-  login: (credentials: LoginFormData) => void;
+  login: (credentials: LoginFormData) => LoginResult;
   logout: () => void;
 }
 
