@@ -1,12 +1,6 @@
 import { createContext, useContext, type ReactNode } from "react";
-import { type User, type LoginFormData } from "../types";
+import { type User, type LoginFormData, type LoginResult } from "../models";
 import { useAuth } from "../hooks/useAuth";
-
-export interface LoginResult {
-  success: boolean;
-  user?: User;
-  error?: any;
-}
 
 interface AuthContextValue {
   user: User | null;

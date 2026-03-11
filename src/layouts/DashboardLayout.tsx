@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { LayoutDashboard, PieChart, Settings, Users, Menu, Bell, User, LogOut, ChevronDown } from 'lucide-react';
 import { useAuthContext } from '../contexts/AuthContext';
-import { hasPermission, type Permissions } from '../schema';
+import { hasPermission, type Permissions } from '../models';
 
 export default function DashboardLayout() {
   const location = useLocation();

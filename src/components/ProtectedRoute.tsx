@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../contexts/AuthContext';
-import { hasPermission, type Permissions } from '../schema';
+import { hasPermission, type Permissions } from '../models';
 
 interface ProtectedRouteProps {
   children: ReactNode;

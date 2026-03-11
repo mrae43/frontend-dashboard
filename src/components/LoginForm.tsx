@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuthContext } from '../contexts/AuthContext';
-import { type UserRole } from '../types';
+import { type UserRole } from '../models';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';

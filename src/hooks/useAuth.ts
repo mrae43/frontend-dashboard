@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { LoginSchema, UserSchema, type User, type LoginFormData } from "../types";
-import { type LoginResult } from "../contexts/AuthContext";
+import { LoginSchema, UserSchema, type User, type LoginFormData, type LoginResult } from "../models";
 
 const STORAGE_KEY = 'food_dashboard_user';
 
