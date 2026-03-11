@@ -84,6 +84,7 @@ export default function LoginForm() {
                 <Mail className="w-5 h-5" />
               </div>
               <input
+                name="email"
                 id="email"
                 type="email"
                 value={email}
@@ -104,6 +105,7 @@ export default function LoginForm() {
                 <Lock className="w-5 h-5" />
               </div>
               <input
+                name="password"
                 id="password"
                 type="password"
                 value={password}
