@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
 import { LayoutDashboard, PieChart, Settings, Users, Menu, Bell, User, LogOut, ChevronDown } from 'lucide-react';
 import { useAuthContext } from '../contexts/AuthContext';
+import { hasPermission, type Permissions } from '../models';
 
 export default function DashboardLayout() {
   const location = useLocation();
@@ -19,11 +20,11 @@ export default function DashboardLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navItems = [
+  const navItems: { name: string; path: string; icon: any; requiredPermission?: keyof Permissions }[] = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Analytics', path: '/analytics', icon: PieChart },
-    { name: 'Customers', path: '/customers', icon: Users },
-    { name: 'Settings', path: '/settings', icon: Settings },
+    { name: 'Analytics', path: '/analytics', icon: PieChart, requiredPermission: 'canViewMargins' },
+    { name: 'Customers', path: '/customers', icon: Users, requiredPermission: 'canManageUsers' },
+    { name: 'Settings', path: '/settings', icon: Settings, requiredPermission: 'canEditPrice' },
   ];
 
   if (loading) {
@@ -48,24 +49,26 @@ export default function DashboardLayout() {
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path || (location.pathname.startsWith(item.path) && item.path !== '/');
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`flex items-center px-3 py-2.5 rounded-lg transition-colors group ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-700 font-medium' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }`}
-              >
-                <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-blue-700' : 'text-slate-400 group-hover:text-slate-600'}`} />
-                {item.name}
-              </Link>
-            );
-          })}
+          {navItems
+            .filter(item => !item.requiredPermission || hasPermission(user?.role, item.requiredPermission))
+            .map((item) => {
+              const isActive = location.pathname === item.path || (location.pathname.startsWith(item.path) && item.path !== '/');
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.path}
+                  className={`flex items-center px-3 py-2.5 rounded-lg transition-colors group ${
+                    isActive 
+                      ? 'bg-blue-50 text-blue-700 font-medium' 
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                  }`}
+                >
+                  <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-blue-700' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                  {item.name}
+                </Link>
+              );
+            })}
         </nav>
       </aside>
 

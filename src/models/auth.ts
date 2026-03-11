@@ -10,13 +10,3 @@ export const LoginSchema = z.object({
 });
 
 export type LoginFormData = z.infer<typeof LoginSchema>;
-
-export const UserSchema = z.object({
-  id: z.number().int().positive(),
-  email: z.email(),
-  role: RoleSchema,
-  isLoggedIn: z.boolean().default(true),
-  token: z.string().optional()
-});
-
-export type User = z.infer<typeof UserSchema>;

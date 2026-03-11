@@ -1,17 +1,13 @@
 import { test, expect } from "@playwright/test";
 
-const adminFile = `./.auth/admin.json`;
-const managerFile = `./.auth/manager.json`;
-const staffFile = `./.auth/staff.json`;
-
-test.describe("Authentication Flow", () => {
+test.describe("Login UI Mechanism", () => {
   test("should redirect unauthenticated users to login", async ({ page }) => {
     await page.goto("/");
     await page.waitForURL("/login");
     await expect(page).toHaveURL(/.*login/);
   });
 
-  test("login as admin", async ({ page }) => {
+  test("successful login should land on dashboard", async ({ page }) => {
     await page.goto("/login");
     await page.fill("[name='email']", "admin@fooddash.com");
     await page.fill("[name='password']", "password123");
@@ -19,47 +15,28 @@ test.describe("Authentication Flow", () => {
     await page.click("button[type='submit']");
     
     await page.waitForURL("/");
+    await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
     await expect(page.locator("[data-testid='user-role']")).toHaveText("admin");
-    await page.context().storageState({ path: adminFile });
   });
 
-  test("login as manager", async ({ page }) => {
+  test("should show Zod validation errors for invalid input", async ({ page }) => {
     await page.goto("/login");
-    await page.fill("[name='email']", "manager@fooddash.com");
-    await page.fill("[name='password']", "password123");
-    await page.selectOption("#role", "manager");
+    
+    // Invalid email
+    await page.fill("[name='email']", "not-an-email");
+    await page.fill("[name='password']", "short");
     await page.click("button[type='submit']");
     
-    await page.waitForURL("/");
-    await expect(page.locator("[data-testid='user-role']")).toHaveText("manager");
-    await page.context().storageState({ path: managerFile });
-  });
-
-  test("login as staff", async ({ page }) => {
-    await page.goto("/login");
-    await page.fill("[name='email']", "staff@fooddash.com");
-    await page.fill("[name='password']", "password123");
-    await page.selectOption("#role", "staff");
-    await page.click("button[type='submit']");
+    await expect(page.getByTestId("login-error")).toContainText("Invalid email address");
     
-    await page.waitForURL("/");
-    await expect(page.locator("[data-testid='user-role']")).toHaveText("staff");
-    await page.context().storageState({ path: staffFile });
-  });
-
-  test("should show error for invalid credentials", async ({ page }) => {
-    await page.goto("/login");
-    await page.fill("[name='email']", "invalid-email");
-    await page.fill("[name='password']", "123");
+    // Fix email but keep short password
+    await page.fill("[name='email']", "valid@email.com");
     await page.click("button[type='submit']");
-    
-    // Zod validation error for email and password length
-    // The current implementation might show the first Zod error
-    await expect(page.locator("text=Invalid email address")).toBeVisible();
+    await expect(page.getByTestId("login-error")).toContainText("Password must be at least 6 characters");
   });
 
   test("should logout successfully", async ({ page }) => {
-    // Perform login first
+    // Fast login via UI
     await page.goto("/login");
     await page.fill("[name='email']", "admin@fooddash.com");
     await page.fill("[name='password']", "password123");

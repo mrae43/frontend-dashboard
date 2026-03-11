@@ -1,11 +1,11 @@
 import { createContext, useContext, type ReactNode } from "react";
-import { type User, type LoginFormData } from "../types";
+import { type User, type LoginFormData, type LoginResult } from "../models";
 import { useAuth } from "../hooks/useAuth";
 
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
-  login: (credentials: LoginFormData) => void;
+  login: (credentials: LoginFormData) => LoginResult;
   logout: () => void;
 }
 
