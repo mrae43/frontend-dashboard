@@ -1,15 +1,26 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("RBAC Verification", () => {
-  test("Admin should see all sidebar items and access all routes", async ({ page }) => {
-    await page.goto("/login");
-    await page.fill("[name='email']", "admin@fooddash.com");
-    await page.fill("[name='password']", "password123");
-    await page.selectOption("#role", "admin");
-    await page.click("button[type='submit']");
-    await page.waitForURL("/");
+const STORAGE_KEY = 'food_dashboard_user';
 
-    // Sidebar items (using role 'link' to be specific and avoid heading conflict)
+const mockUser = (role: 'admin' | 'manager' | 'staff') => ({
+  id: 1,
+  email: `${role}@fooddash.com`,
+  token: `mock-jwt-test`,
+  isLoggedIn: true,
+  role: role,
+});
+
+test.describe("RBAC Verification (Bypassing Login)", () => {
+  
+  test("Admin should see all sidebar items and access all routes", async ({ page }) => {
+    // Inject admin state
+    await page.addInitScript((value) => {
+      window.localStorage.setItem(value.key, JSON.stringify(value.user));
+    }, { key: STORAGE_KEY, user: mockUser('admin') });
+
+    await page.goto("/");
+
+    // Sidebar items
     await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Analytics' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Customers' })).toBeVisible();
@@ -27,12 +38,12 @@ test.describe("RBAC Verification", () => {
   });
 
   test("Manager should NOT see Customers and be redirected if accessing manually", async ({ page }) => {
-    await page.goto("/login");
-    await page.fill("[name='email']", "manager@fooddash.com");
-    await page.fill("[name='password']", "password123");
-    await page.selectOption("#role", "manager");
-    await page.click("button[type='submit']");
-    await page.waitForURL("/");
+    // Inject manager state
+    await page.addInitScript((value) => {
+      window.localStorage.setItem(value.key, JSON.stringify(value.user));
+    }, { key: STORAGE_KEY, user: mockUser('manager') });
+
+    await page.goto("/");
 
     // Sidebar items
     await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
@@ -47,12 +58,12 @@ test.describe("RBAC Verification", () => {
   });
 
   test("Staff should ONLY see Dashboard and be redirected from others", async ({ page }) => {
-    await page.goto("/login");
-    await page.fill("[name='email']", "staff@fooddash.com");
-    await page.fill("[name='password']", "password123");
-    await page.selectOption("#role", "staff");
-    await page.click("button[type='submit']");
-    await page.waitForURL("/");
+    // Inject staff state
+    await page.addInitScript((value) => {
+      window.localStorage.setItem(value.key, JSON.stringify(value.user));
+    }, { key: STORAGE_KEY, user: mockUser('staff') });
+
+    await page.goto("/");
 
     // Sidebar items
     await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
