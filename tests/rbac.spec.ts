@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-const STORAGE_KEY = 'food_dashboard_user';
+const STORAGE_KEY = 'loyalty_pulse_user';
 
 const mockUser = (role: 'admin' | 'manager' | 'staff') => ({
   id: 1,
-  email: `${role}@fooddash.com`,
+  email: `${role}@loyaltypulse.com`,
   token: `mock-jwt-test`,
   isLoggedIn: true,
   role: role,
@@ -23,21 +23,25 @@ test.describe("RBAC Verification (Bypassing Login)", () => {
     // Sidebar items
     await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Analytics' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Customers' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Members' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Rewards' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Points' })).toBeVisible();
 
     // Direct access
     await page.goto("/analytics");
-    await expect(page.locator("text=Analytics Page Under Construction")).toBeVisible();
+    await expect(page.locator("text=Member Analytics Under Construction")).toBeVisible();
     
-    await page.goto("/customers");
-    await expect(page.locator("text=Customers Page Under Construction")).toBeVisible();
+    await page.goto("/members");
+    await expect(page.locator("text=Member Management Under Construction")).toBeVisible();
     
-    await page.goto("/settings");
-    await expect(page.locator("text=Settings Page Under Construction")).toBeVisible();
+    await page.goto("/rewards");
+    await expect(page.locator("text=Rewards Management Under Construction")).toBeVisible();
+
+    await page.goto("/points");
+    await expect(page.locator("text=Points Adjustment Under Construction")).toBeVisible();
   });
 
-  test("Manager should NOT see Customers and be redirected if accessing manually", async ({ page }) => {
+  test("Manager should NOT see Members/Rewards and be redirected", async ({ page }) => {
     // Inject manager state
     await page.addInitScript((value) => {
       window.localStorage.setItem(value.key, JSON.stringify(value.user));
@@ -48,11 +52,12 @@ test.describe("RBAC Verification (Bypassing Login)", () => {
     // Sidebar items
     await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Analytics' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Settings' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Customers' })).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'Points' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Members' })).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'Rewards' })).not.toBeVisible();
 
     // Direct access to unauthorized
-    await page.goto("/customers");
+    await page.goto("/members");
     await page.waitForURL("/unauthorized");
     await expect(page.locator("text=Access Denied")).toBeVisible();
   });
@@ -68,11 +73,12 @@ test.describe("RBAC Verification (Bypassing Login)", () => {
     // Sidebar items
     await expect(page.getByRole('link', { name: 'Dashboard' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Analytics' })).not.toBeVisible();
-    await expect(page.getByRole('link', { name: 'Customers' })).not.toBeVisible();
-    await expect(page.getByRole('link', { name: 'Settings' })).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'Members' })).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'Rewards' })).not.toBeVisible();
+    await expect(page.getByRole('link', { name: 'Points' })).not.toBeVisible();
 
     // Direct access to unauthorized
-    const unauthorizedPaths = ["/analytics", "/customers", "/settings"];
+    const unauthorizedPaths = ["/analytics", "/members", "/rewards", "/points"];
     for (const path of unauthorizedPaths) {
       await page.goto(path);
       await page.waitForURL("/unauthorized");
