@@ -7,7 +7,7 @@ export const PermissionSchema = z.object({
   canManageUsers: z.boolean(),   
 })
 
-type Permissions = z.infer<typeof PermissionSchema>
+export type Permissions = z.infer<typeof PermissionSchema>
 
 export const ROLE_PERMISSIONS: Record<string, Permissions> = {
   ADMIN: {
@@ -28,4 +28,11 @@ export const ROLE_PERMISSIONS: Record<string, Permissions> = {
     canDeleteReviews: false,
     canManageUsers: false,
   },
+};
+
+export const hasPermission = (role: string | undefined, permission: keyof Permissions): boolean => {
+  if (!role) return false;
+  const upperRole = role.toUpperCase();
+  const permissions = ROLE_PERMISSIONS[upperRole];
+  return permissions ? (permissions as any)[permission] : false;
 };
