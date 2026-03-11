@@ -53,7 +53,7 @@ test.describe("Login UI Mechanism", () => {
   test("should logout successfully", async ({ page }) => {
     // Fast login via UI
     await page.goto("/login");
-    await page.fill("[name='email']", "admin@fooddash.com");
+    await page.fill("[name='email']", "admin@loyaltypulse.com");
     await page.fill("[name='password']", "password123");
     await page.click("button[type='submit']");
     await page.waitForURL("/");
@@ -62,7 +62,7 @@ test.describe("Login UI Mechanism", () => {
     await page.click("[data-testid='user-avatar-trigger']");
     
     // Click logout
-    await page.click("text=Sign Out");
+    await page.click("text=Log Out");
     
     // Should redirect to login
     await page.waitForURL("/login");
