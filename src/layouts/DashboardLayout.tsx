@@ -140,7 +140,7 @@ export default function DashboardLayout() {
                         role="menuitem"
                       >
                         <LogOut className="w-4 h-4" />
-                        Sign Out
+                        Log Out
                       </button>
                     </div>
                   </div>
