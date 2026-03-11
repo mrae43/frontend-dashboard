@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuthContext } from '../contexts/AuthContext';
-import type { UserRole } from '../types';
+import { type UserRole } from '../types';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
@@ -31,22 +31,24 @@ export default function LoginForm() {
     e.preventDefault();
     setError('');
     
-    try {
-      login({
-        email, 
-        password,
-        role, 
-      });
-      navigate('/');
-    } catch (err: unknown) {
-      if (err instanceof z.ZodError) {
-        setError(err.issues[0].message);
-      } else if (err instanceof Error) {
-        setError(err.message);
+    const result = login({
+      email, 
+      password,
+      role, 
+    });
+
+    if (!result.success) {
+      if (result.error instanceof z.ZodError) {
+        setError(result.error.issues[0].message);
+      } else if (result.error instanceof Error) {
+        setError(result.error.message);
       } else {
         setError('Login failed');
       }
+      return;
     }
+
+    navigate('/');
   };
 
   return (
@@ -69,12 +71,16 @@ export default function LoginForm() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium">
+          <div 
+            role="alert"
+            data-testid="login-error"
+            className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium"
+          >
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} noValidate className="space-y-5">
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5" htmlFor="email">
               Email
