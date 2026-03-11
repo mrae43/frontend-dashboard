@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:5173",
+      "localStorage": [
+        {
+          "name": "food_dashboard_user",
+          "value": "{\"id\":1,\"email\":\"staff@fooddash.com\",\"token\":\"mock-jwt-1773150857124\",\"isLoggedIn\":true,\"role\":\"staff\"}"
+        }
+      ]
+    }
+  ]
+}
