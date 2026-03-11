@@ -1,11 +1,11 @@
-import { TrendingUp, Users, DollarSign, Activity, FileText } from 'lucide-react';
+import { TrendingUp, Users, Coins, Activity, Gift } from 'lucide-react';
 
 export default function Dashboard() {
   const stats = [
-    { title: 'Total Revenue', value: '$45,231.89', change: '+20.1%', icon: DollarSign, trend: 'up' },
-    { title: 'Active Orders', value: '342', change: '+15.4%', icon: FileText, trend: 'up' },
-    { title: 'Total Customers', value: '1,234', change: '+4.3%', icon: Users, trend: 'up' },
-    { title: 'Order Rejections', value: '2.4%', change: '-1.2%', icon: Activity, trend: 'down' },
+    { title: 'Points Issued', value: '1,245,678', change: '+12.5%', icon: Coins, trend: 'up' },
+    { title: 'New Redemptions', value: '854', change: '+8.2%', icon: Gift, trend: 'up' },
+    { title: 'Active Members', value: '12,434', change: '+4.3%', icon: Users, trend: 'up' },
+    { title: 'Member Retention', value: '94.2%', change: '+1.2%', icon: Activity, trend: 'up' },
   ];
 
   return (
@@ -43,17 +43,17 @@ export default function Dashboard() {
         {/* large chart area */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-6 shadow-sm min-h-[420px] flex flex-col">
           <h2 className="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-indigo-500" />
-            Revenue Overview
+            <TrendingUp className="w-5 h-5 text-indigo-500" />
+            Loyalty Points Growth
           </h2>
           <div className="flex-1 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center border-dashed">
-            <p className="text-slate-400 font-medium">Chart visualization area</p>
+            <p className="text-slate-400 font-medium">Points accrual visualization area</p>
           </div>
         </div>
         
         {/* secondary area */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm min-h-[420px] flex flex-col">
-          <h2 className="text-lg font-semibold text-slate-800 mb-6">Recent Activity</h2>
+          <h2 className="text-lg font-semibold text-slate-800 mb-6">Recent Redemptions</h2>
           <div className="flex-1 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-center border-dashed">
             <p className="text-slate-400 font-medium">Activity feed area</p>
           </div>

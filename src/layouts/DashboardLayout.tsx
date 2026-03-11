@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { LayoutDashboard, PieChart, Settings, Users, Menu, Bell, User, LogOut, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, PieChart, Gift, Users, Menu, Bell, User, LogOut, ChevronDown, Coins } from 'lucide-react';
 import { useAuthContext } from '../contexts/AuthContext';
 import { hasPermission, type Permissions } from '../models';
 
@@ -22,9 +22,10 @@ export default function DashboardLayout() {
 
   const navItems: { name: string; path: string; icon: any; requiredPermission?: keyof Permissions }[] = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Analytics', path: '/analytics', icon: PieChart, requiredPermission: 'canViewMargins' },
-    { name: 'Customers', path: '/customers', icon: Users, requiredPermission: 'canManageUsers' },
-    { name: 'Settings', path: '/settings', icon: Settings, requiredPermission: 'canEditPrice' },
+    { name: 'Analytics', path: '/analytics', icon: PieChart, requiredPermission: 'canViewMemberAnalytics' },
+    { name: 'Members', path: '/members', icon: Users, requiredPermission: 'canManageMembers' },
+    { name: 'Rewards', path: '/rewards', icon: Gift, requiredPermission: 'canManageRewards' },
+    { name: 'Points', path: '/points', icon: Coins, requiredPermission: 'canAdjustPoints' },
   ];
 
   if (loading) {
@@ -44,7 +45,7 @@ export default function DashboardLayout() {
         <div className="h-16 flex items-center px-6 border-b border-slate-200">
           <Menu className="w-6 h-6 mr-3 text-slate-500 cursor-pointer hover:text-slate-800 transition-colors" />
           <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            FoodDash
+            LoyaltyPulse
           </span>
         </div>
         
