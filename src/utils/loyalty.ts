@@ -19,7 +19,7 @@ export const calculateEarnedPoints = (amount: number, tier: LoyaltyTier): number
 }
 
 export const canMemberRedeemPoints = (member: LoyaltyMember, reward: Reward): boolean => {
-  return member.points >= reward.costInPoints && reward.stock > 0;
+  return member.spendablePoints >= reward.costInPoints && reward.stock > 0;
 }
 
 export const formatPoints = (points: number): string => {
@@ -33,7 +33,7 @@ export const getNextTier = (currentTier: LoyaltyTier): LoyaltyTier | null => {
   return TIERS_ORDER[nextIndex] ?? null;
 }
 
-export const calculateProgressToNextTier = (points: number, currentTier: LoyaltyTier): { 
+export const calculateProgressToNextTier = (tierXP: number, currentTier: LoyaltyTier): { 
   progress: number; 
   remaining: number; 
   nextTier: LoyaltyTier | null 
@@ -47,10 +47,10 @@ export const calculateProgressToNextTier = (points: number, currentTier: Loyalty
   const currentThreshold = TIER_THRESHOLDS[currentTier];
   
   const totalNeeded = threshold - currentThreshold;
-  const earnedInCurrentTier = Math.max(0, points - currentThreshold);
+  const earnedInCurrentTier = Math.max(0, tierXP - currentThreshold);
   
   const progress = Math.min(100, Math.round((earnedInCurrentTier / totalNeeded) * 100));
-  const remaining = Math.max(0, threshold - points);
+  const remaining = Math.max(0, threshold - tierXP);
 
   return { progress, remaining, nextTier };
 }

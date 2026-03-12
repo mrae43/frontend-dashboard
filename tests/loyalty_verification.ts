@@ -12,7 +12,7 @@ console.log('PLATINUM (2x) for 100:', calculateEarnedPoints(100, 'PLATINUM'));
 
 // 2. Redemption Logic
 console.log('\n2. Redemption Logic:');
-const member: Partial<LoyaltyMember> = { points: 1000 };
+const member: Partial<LoyaltyMember> = { spendablePoints: 1000, tierXP: 1000 };
 const cheapReward: Partial<Reward> = { costInPoints: 500, stock: 10 };
 const expensiveReward: Partial<Reward> = { costInPoints: 1500, stock: 10 };
 const outOfStockReward: Partial<Reward> = { costInPoints: 500, stock: 0 };
