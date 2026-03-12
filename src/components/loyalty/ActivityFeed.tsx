@@ -102,7 +102,10 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
             {transactions.length === 0 && (
               <tr>
                 <td colSpan={3} className="px-6 py-20 text-center">
-                  <div className="flex flex-col items-center gap-3">
+                  <div 
+                    data-testid="activity-feed-empty"
+                    className="flex flex-col items-center gap-3"
+                  >
                     <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-300">
                       <Search className="w-6 h-6" />
                     </div>
