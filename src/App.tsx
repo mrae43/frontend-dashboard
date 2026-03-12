@@ -30,18 +30,23 @@ function App() {
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="analytics" element={
-              <ProtectedRoute requiredPermission="canViewMargins">
-                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Analytics Page Under Construction</div>
+              <ProtectedRoute requiredPermission="canViewMemberAnalytics">
+                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Member Analytics Under Construction</div>
               </ProtectedRoute>
             } />
-            <Route path="customers" element={
-              <ProtectedRoute requiredPermission="canManageUsers">
-                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Customers Page Under Construction</div>
+            <Route path="members" element={
+              <ProtectedRoute requiredPermission="canManageMembers">
+                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Member Management Under Construction</div>
               </ProtectedRoute>
             } />
-            <Route path="settings" element={
-              <ProtectedRoute requiredPermission="canEditPrice">
-                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Settings Page Under Construction</div>
+            <Route path="rewards" element={
+              <ProtectedRoute requiredPermission="canManageRewards">
+                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Rewards Management Under Construction</div>
+              </ProtectedRoute>
+            } />
+            <Route path="points" element={
+              <ProtectedRoute requiredPermission="canAdjustPoints">
+                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Points Adjustment Under Construction</div>
               </ProtectedRoute>
             } />
           </Route>

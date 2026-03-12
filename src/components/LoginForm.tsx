@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export default function LoginForm() {
   const { user, loading, login } = useAuthContext();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@fooddash.com');
+  const [email, setEmail] = useState('admin@loyaltypulse.com');
   const [password, setPassword] = useState('password123');
   const [role, setRole] = useState<UserRole>('admin');
   const [error, setError] = useState('');
@@ -65,7 +65,7 @@ export default function LoginForm() {
         
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-            FoodDash
+            Loyalty Pulse
           </h1>
           <p className="text-slate-500 font-medium">Welcome back, please log in.</p>
         </div>
@@ -144,7 +144,7 @@ export default function LoginForm() {
               type="submit"
               className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-md transition-all active:scale-[0.98]"
             >
-              Sign In
+              Log In
               <ArrowRight className="w-5 h-5" />
             </button>
           </div>

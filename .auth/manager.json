@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "food_dashboard_user",
-          "value": "{\"id\":1,\"email\":\"admin@fooddash.com\",\"token\":\"mock-jwt-1773150858487\",\"isLoggedIn\":true,\"role\":\"manager\"}"
+          "value": "{\"id\":1,\"email\":\"admin@loyaltypulse.com\",\"token\":\"mock-jwt-1773150858487\",\"isLoggedIn\":true,\"role\":\"manager\"}"
         }
       ]
     }
