@@ -39,3 +39,11 @@ export const PointsTransactionSchema = z.object({
 });
 
 export type PointsTransaction = z.infer<typeof PointsTransactionSchema>;
+
+export const LoyaltyTierMultiplierSchema = z.object({
+  BRONZE: z.number().positive(),
+  SILVER: z.number().positive(),
+  GOLD: z.number().positive(),
+  PLATINUM: z.number().positive(),
+});
+
