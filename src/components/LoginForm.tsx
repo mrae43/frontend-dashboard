@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export default function LoginForm() {
   const { user, loading, login } = useAuthContext();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@fooddash.com');
+  const [email, setEmail] = useState('admin@loyaltypulse.com');
   const [password, setPassword] = useState('password123');
   const [role, setRole] = useState<UserRole>('admin');
   const [error, setError] = useState('');
