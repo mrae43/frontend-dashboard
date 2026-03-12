@@ -7,7 +7,8 @@ export const LoyaltyMemberSchema = z.object({
   id: z.uuid(),
   name: z.string(),
   email: z.email(),
-  points: z.number().int().nonnegative(),
+  spendablePoints: z.number().int().nonnegative(),
+  tierXP: z.number().int().nonnegative(),
   tier: LoyaltyTierSchema,
   joinDate: z.iso.datetime(),
   lastVisit: z.iso.datetime().optional(),
@@ -39,3 +40,11 @@ export const PointsTransactionSchema = z.object({
 });
 
 export type PointsTransaction = z.infer<typeof PointsTransactionSchema>;
+
+export const LoyaltyTierMultiplierSchema = z.object({
+  BRONZE: z.number().positive(),
+  SILVER: z.number().positive(),
+  GOLD: z.number().positive(),
+  PLATINUM: z.number().positive(),
+});
+

@@ -4,6 +4,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
 import LoginForm from './components/LoginForm';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import MemberDetail from './pages/MemberDetail';
 
 function App() {
   return (
@@ -37,6 +38,11 @@ function App() {
             <Route path="members" element={
               <ProtectedRoute requiredPermission="canManageMembers">
                 <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Member Management Under Construction</div>
+              </ProtectedRoute>
+            } />
+            <Route path="members/:id" element={
+              <ProtectedRoute requiredPermission="canManageMembers">
+                <MemberDetail />
               </ProtectedRoute>
             } />
             <Route path="rewards" element={
