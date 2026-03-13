@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import LoginForm from './components/LoginForm';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import MemberDetail from './pages/MemberDetail';
+import Member from './pages/Member';
 
 function App() {
   return (
@@ -37,7 +38,7 @@ function App() {
             } />
             <Route path="members" element={
               <ProtectedRoute requiredPermission="canManageMembers">
-                <div className="bg-white rounded-xl border border-slate-200 p-8 shadow-sm flex items-center justify-center text-slate-500 min-h-[400px]">Member Management Under Construction</div>
+                <Member />
               </ProtectedRoute>
             } />
             <Route path="members/:id" element={
