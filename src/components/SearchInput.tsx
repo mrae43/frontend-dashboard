@@ -1,11 +1,11 @@
 import { Search, X } from 'lucide-react';
 
-interface SearchTransactionProps {
+interface SearchInputProps {
     search: string;
     setSearch: (search: string) => void;
 }
 
-export const SearchTransaction = ({ search, setSearch }: SearchTransactionProps) => {
+export const SearchInput = ({ search, setSearch }: SearchInputProps) => {
   return (
     <div className="flex-1 max-w-sm relative group">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
