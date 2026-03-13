@@ -30,7 +30,8 @@ export function useAuth() {
     try {
       const result = LoginSchema.safeParse(credentials);
       if (!result.success) {
-        return { success: false, error: result.error.message };
+        const errorMessage = result.error.issues[0].message;
+        return { success: false, error: errorMessage };
       }
 
       const validated = result.data as LoginFormData;

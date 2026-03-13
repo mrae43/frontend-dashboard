@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAuthContext } from '../contexts/AuthContext';
 import { type UserRole } from '../models';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
-import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm() {
@@ -38,13 +37,7 @@ export default function LoginForm() {
     });
 
     if (!result.success) {
-      if (result.error instanceof z.ZodError) {
-        setError(result.error.issues[0].message);
-      } else if (result.error instanceof Error) {
-        setError(result.error.message);
-      } else {
-        setError('Login failed');
-      }
+      setError(String(result.error));
       return;
     }
 
