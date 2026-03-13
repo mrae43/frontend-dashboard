@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
-import { ArrowUpRight, ArrowDownLeft, RefreshCcw, Clock, Search, type LucideIcon, X } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, RefreshCcw, Clock, type LucideIcon, Search } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { type PointsTransaction, type TransactionType } from '../../models/loyalty';
 import { PointDisplay } from './PointDisplay';
 import { getBadgeStyles } from '../../utils/style';
+import { SearchTransaction } from './SearchTransaction';
 
 interface ActivityFeedProps {
   transactions: PointsTransaction[];
@@ -41,7 +42,7 @@ const TYPE_CONFIG: Record<TransactionType, TransactionUI> = {
     variant: 'neutral',
     action: 'none',
   },
-} 
+};
 
 export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
   const [search, setSearch] = useState('');
@@ -51,9 +52,9 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
       return tx.description.toLowerCase().includes(search.toLowerCase());
     });
   }, [transactions, search]);
-  
+
   return (
-    <div 
+    <div
       data-testid="activity-feed-tile"
       className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
     >
@@ -62,39 +63,18 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
           <h3 className="text-lg font-bold text-slate-900">Activity History</h3>
           <p className="text-sm text-slate-500">Live feed of point transactions</p>
         </div>
-        <div className="flex-1 max-w-sm relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
-          <input
-            type="text"
-            data-testid="transaction-search-input"
-            placeholder="Search transactions..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-10 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl 
-                      placeholder:text-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/10 
-                      focus:border-blue-500 transition-all outline-none"
-          />
-          {search && (
-            <button 
-              onClick={() => setSearch('')}
-              data-testid="transaction-search-clear"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-md hover:bg-slate-200/50 transition-colors"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
-        <span 
-          data-testid="transaction-count-badge" 
+        <SearchTransaction search={search} setSearch={setSearch} />
+        <span
+          data-testid="transaction-count-badge"
           className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold uppercase tracking-wider"
         >
-          {search 
-            ? `${filteredTransactions.length} found` 
+          {search
+            ? `${filteredTransactions.length} found`
             : `${transactions.length} total`
           }
         </span>
       </div>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -139,7 +119,7 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
             {filteredTransactions.length === 0 && (
               <tr>
                 <td colSpan={3} className="px-6 py-20 text-center">
-                  <div 
+                  <div
                     data-testid="activity-feed-empty"
                     className="flex flex-col items-center gap-3"
                   >
@@ -159,7 +139,7 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
           </tbody>
         </table>
       </div>
-      
+
       <div className="p-4 bg-slate-50/50 border-t border-slate-100 flex justify-center">
         <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-600 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-slate-200">
           Load More History
