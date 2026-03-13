@@ -1,8 +1,10 @@
-import { ArrowUpRight, ArrowDownLeft, RefreshCcw, Clock, Search, type LucideIcon } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { ArrowUpRight, ArrowDownLeft, RefreshCcw, Clock, type LucideIcon, Search } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { type PointsTransaction, type TransactionType } from '../../models/loyalty';
 import { PointDisplay } from './PointDisplay';
 import { getBadgeStyles } from '../../utils/style';
+import { SearchTransaction } from './SearchTransaction';
 
 interface ActivityFeedProps {
   transactions: PointsTransaction[];
@@ -40,11 +42,19 @@ const TYPE_CONFIG: Record<TransactionType, TransactionUI> = {
     variant: 'neutral',
     action: 'none',
   },
-} 
+};
 
 export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
+  const [search, setSearch] = useState('');
+
+  const filteredTransactions = useMemo(() => {
+    return transactions.filter((tx) => {
+      return tx.description.toLowerCase().includes(search.toLowerCase());
+    });
+  }, [transactions, search]);
+
   return (
-    <div 
+    <div
       data-testid="activity-feed-tile"
       className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
     >
@@ -53,11 +63,18 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
           <h3 className="text-lg font-bold text-slate-900">Activity History</h3>
           <p className="text-sm text-slate-500">Live feed of point transactions</p>
         </div>
-        <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold uppercase tracking-wider">
-          {transactions.length} total
+        <SearchTransaction search={search} setSearch={setSearch} />
+        <span
+          data-testid="transaction-count-badge"
+          className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold uppercase tracking-wider"
+        >
+          {search
+            ? `${filteredTransactions.length} found`
+            : `${transactions.length} total`
+          }
         </span>
       </div>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -68,7 +85,7 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-sm">
-            {transactions.map((tx) => {
+            {filteredTransactions.map((tx) => {
               // Defensive data handling: Fallback to ADJUSTMENT if type is unknown
               const config = TYPE_CONFIG[tx.type] || TYPE_CONFIG.ADJUSTMENT;
               const relativeTime = formatDistanceToNow(new Date(tx.date), { addSuffix: true });
@@ -98,11 +115,11 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
                 </tr>
               );
             })}
-            
-            {transactions.length === 0 && (
+
+            {filteredTransactions.length === 0 && (
               <tr>
                 <td colSpan={3} className="px-6 py-20 text-center">
-                  <div 
+                  <div
                     data-testid="activity-feed-empty"
                     className="flex flex-col items-center gap-3"
                   >
@@ -112,7 +129,7 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
                     <div>
                       <p className="text-slate-900 font-bold">No transactions found</p>
                       <p className="text-sm text-slate-500 mt-1 max-w-[200px] mx-auto">
-                        We couldn't find any activity for this member. Try adjusting your global filters.
+                        We couldn't find any activity for this member. Try adjusting your search keyword.
                       </p>
                     </div>
                   </div>
@@ -122,7 +139,7 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
           </tbody>
         </table>
       </div>
-      
+
       <div className="p-4 bg-slate-50/50 border-t border-slate-100 flex justify-center">
         <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-600 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded-lg transition-all border border-transparent hover:border-slate-200">
           Load More History
