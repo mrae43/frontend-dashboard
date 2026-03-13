@@ -50,7 +50,7 @@ export default function Dashboard() {
             <p className="text-slate-400 font-medium">Points accrual visualization area</p>
           </div>
         </div>
-        
+
         {/* secondary area */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm min-h-[420px] flex flex-col">
           <h2 className="text-lg font-semibold text-slate-800 mb-6">Recent Redemptions</h2>

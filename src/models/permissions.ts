@@ -4,7 +4,7 @@ export const PermissionSchema = z.object({
   canAdjustPoints: z.boolean(),
   canViewMemberAnalytics: z.boolean(),
   canManageRewards: z.boolean(),
-  canManageMembers: z.boolean(),   
+  canManageMembers: z.boolean(),
 });
 
 export type Permissions = z.infer<typeof PermissionSchema>;
@@ -34,5 +34,5 @@ export const hasPermission = (role: string | undefined, permission: keyof Permis
   if (!role) return false;
   const upperRole = role.toUpperCase();
   const permissions = ROLE_PERMISSIONS[upperRole];
-  return permissions ? (permissions as any)[permission] : false;
+  return permissions ? (permissions as Permissions)[permission] : false;
 };

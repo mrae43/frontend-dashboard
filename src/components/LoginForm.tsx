@@ -30,11 +30,11 @@ export default function LoginForm() {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError('');
-    
+
     const result = login({
-      email, 
+      email,
       password,
-      role, 
+      role,
     });
 
     if (!result.success) {
@@ -62,7 +62,7 @@ export default function LoginForm() {
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-100 p-8 z-10 relative overflow-hidden">
         {/* Decorative header stroke */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-        
+
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             Loyalty Pulse
@@ -71,7 +71,7 @@ export default function LoginForm() {
         </div>
 
         {error && (
-          <div 
+          <div
             role="alert"
             data-testid="login-error"
             className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 text-sm font-medium"

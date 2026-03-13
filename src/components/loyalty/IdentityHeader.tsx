@@ -15,7 +15,7 @@ export const IdentityHeader= ({ member }: IdentityHeaderProps) => {
   const joinYear = new Date(member.joinDate).getFullYear();
 
   return (
-    <div 
+    <div
       data-testid="identity-header-tile"
       className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4"
     >
@@ -30,7 +30,7 @@ export const IdentityHeader= ({ member }: IdentityHeaderProps) => {
           <p className="text-slate-500 font-medium">{member.email}</p>
         </div>
       </div>
-      
+
       <div className="flex flex-col items-end gap-2">
         <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider ${TIER_COLORS[member.tier]}`}>
           {member.tier} Member
