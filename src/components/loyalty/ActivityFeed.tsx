@@ -84,8 +84,14 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
             </button>
           )}
         </div>
-        <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold uppercase tracking-wider" data-testid="transaction-count-badge">
-          {transactions.length} total
+        <span 
+          data-testid="transaction-count-badge" 
+          className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold uppercase tracking-wider"
+        >
+          {search 
+            ? `${filteredTransactions.length} found` 
+            : `${transactions.length} total`
+          }
         </span>
       </div>
       
