@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Outlet, Link, useLocation, Navigate } from 'react-router-dom';
-import { LayoutDashboard, PieChart, Gift, Users, Menu, Bell, User, LogOut, ChevronDown, Coins } from 'lucide-react';
+import { LayoutDashboard, PieChart, Gift, Users, Menu, Bell, User, LogOut, ChevronDown, Coins, type LucideIcon } from 'lucide-react';
 import { useAuthContext } from '../contexts/AuthContext';
 import { hasPermission, type Permissions } from '../models';
 
@@ -20,7 +20,7 @@ export default function DashboardLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navItems: { name: string; path: string; icon: any; requiredPermission?: keyof Permissions }[] = [
+  const navItems: { name: string; path: string; icon: LucideIcon; requiredPermission?: keyof Permissions }[] = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
     { name: 'Analytics', path: '/analytics', icon: PieChart, requiredPermission: 'canViewMemberAnalytics' },
     { name: 'Members', path: '/members', icon: Users, requiredPermission: 'canManageMembers' },
@@ -48,7 +48,7 @@ export default function DashboardLayout() {
             LoyaltyPulse
           </span>
         </div>
-        
+
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
           {navItems
             .filter(item => !item.requiredPermission || hasPermission(user?.role, item.requiredPermission))
@@ -60,8 +60,8 @@ export default function DashboardLayout() {
                   key={item.name}
                   to={item.path}
                   className={`flex items-center px-3 py-2.5 rounded-lg transition-colors group ${
-                    isActive 
-                      ? 'bg-blue-50 text-blue-700 font-medium' 
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 font-medium'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                   }`}
                 >
@@ -78,13 +78,13 @@ export default function DashboardLayout() {
         {/* Top Header */}
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shadow-sm z-0">
           <div className="flex items-center">
-             <h1 className="text-xl font-semibold text-slate-800">
-               {navItems.find(i => i.path === location.pathname)?.name || 'Dashboard'}
-             </h1>
+            <h1 className="text-xl font-semibold text-slate-800">
+              {navItems.find(i => i.path === location.pathname)?.name || 'Dashboard'}
+            </h1>
           </div>
           <div className="flex items-center gap-4">
             {/* Notifications Bell */}
-            <button 
+            <button
               className="p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-full transition-colors relative group"
               data-testid="notification-bell"
               aria-label="Notifications"
@@ -93,7 +93,7 @@ export default function DashboardLayout() {
               <Bell className="w-5 h-5" />
             </button>
             {user && (
-              <span 
+              <span
                 data-testid="user-role"
                 className="inline-flex items-center px-2 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-medium capitalize"
                 aria-label={`User role: ${user.role}`}
@@ -118,7 +118,7 @@ export default function DashboardLayout() {
                   <ChevronDown className={`w-3.5 h-3.5 text-blue-600 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {dropdownOpen && (
-                  <div 
+                  <div
                     className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-lg border border-slate-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                     role="menu"
                     aria-labelledby="user-avatar-trigger"

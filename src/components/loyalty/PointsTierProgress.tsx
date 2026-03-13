@@ -6,11 +6,11 @@ interface PointsTierProgressProps {
   member: LoyaltyMember;
 }
 
-const TIER_THEMES: Record<LoyaltyTier, { 
-  bg: string, 
+const TIER_THEMES: Record<LoyaltyTier, {
+  bg: string,
   border: string,
-  accent: string, 
-  text: string, 
+  accent: string,
+  text: string,
   walletBg: string,
   progress: string,
   shadow: string
@@ -22,7 +22,7 @@ const TIER_THEMES: Record<LoyaltyTier, {
     text: 'text-orange-900',
     walletBg: 'bg-white',
     progress: 'bg-orange-500',
-    shadow: 'shadow-orange-200'
+    shadow: 'shadow-orange-200',
   },
   SILVER: {
     bg: 'bg-slate-50',
@@ -31,7 +31,7 @@ const TIER_THEMES: Record<LoyaltyTier, {
     text: 'text-slate-900',
     walletBg: 'bg-white',
     progress: 'bg-slate-400',
-    shadow: 'shadow-slate-200'
+    shadow: 'shadow-slate-200',
   },
   GOLD: {
     bg: 'bg-yellow-50',
@@ -40,7 +40,7 @@ const TIER_THEMES: Record<LoyaltyTier, {
     text: 'text-yellow-900',
     walletBg: 'bg-white',
     progress: 'bg-yellow-500',
-    shadow: 'shadow-yellow-200'
+    shadow: 'shadow-yellow-200',
   },
   PLATINUM: {
     bg: 'bg-indigo-50',
@@ -49,21 +49,21 @@ const TIER_THEMES: Record<LoyaltyTier, {
     text: 'text-indigo-900',
     walletBg: 'bg-white',
     progress: 'bg-indigo-600',
-    shadow: 'shadow-indigo-200'
-  }
+    shadow: 'shadow-indigo-200',
+  },
 };
 
 export const PointsTierProgress = ({ member }: PointsTierProgressProps) => {
   const { progress, remaining, nextTier } = calculateProgressToNextTier(member.tierXP, member.tier);
   const theme = TIER_THEMES[member.tier];
-  
+
   const currentThreshold = TIER_THRESHOLDS[member.tier];
   const nextThreshold = nextTier ? TIER_THRESHOLDS[nextTier] : currentThreshold;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {/* The "Wallet" Card - Immediate Gratification */}
-      <div 
+      <div
         data-testid="wallet-card"
         className={`md:col-span-1 rounded-3xl p-6 shadow-xl border-2 ${theme.bg} ${theme.border} flex flex-col justify-between transition-all duration-300 hover:scale-[1.02]`}
       >
@@ -83,16 +83,16 @@ export const PointsTierProgress = ({ member }: PointsTierProgressProps) => {
           </div>
           <p className="mt-2 text-sm font-medium text-slate-500">Spendable Points</p>
         </div>
-        
+
         <button className="mt-8 w-full py-3 px-4 bg-slate-900 text-white rounded-2xl font-bold text-sm shadow-lg shadow-slate-200 hover:bg-slate-800 transition-colors">
           Redeem Rewards
         </button>
       </div>
 
       {/* The "Status" Card - Future Aspiration */}
-      <div 
+      <div
         data-testid="status-card"
-        className={`md:col-span-2 rounded-3xl p-6 shadow-xl border-2 bg-white border-slate-100 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl`}
+        className={'md:col-span-2 rounded-3xl p-6 shadow-xl border-2 bg-white border-slate-100 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl'}
       >
         <div className="flex justify-between items-start mb-6">
           <div>
@@ -104,7 +104,7 @@ export const PointsTierProgress = ({ member }: PointsTierProgressProps) => {
             </div>
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Your Progression</h2>
           </div>
-          
+
           <div className={`px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest ${theme.bg} ${theme.accent} border ${theme.border}`}>
             Tier: {member.tier}
           </div>
@@ -128,15 +128,15 @@ export const PointsTierProgress = ({ member }: PointsTierProgressProps) => {
                 </div>
               </div>
 
-              <div 
-                role="progressbar" 
-                aria-valuenow={member.tierXP} 
-                aria-valuemin={currentThreshold} 
+              <div
+                role="progressbar"
+                aria-valuenow={member.tierXP}
+                aria-valuemin={currentThreshold}
                 aria-valuemax={nextThreshold}
                 aria-label={`Progress to ${nextTier} Tier`}
                 className="relative h-6 bg-slate-100 rounded-full overflow-hidden border-4 border-slate-50 shadow-inner"
               >
-                <div 
+                <div
                   style={{ width: `${progress}%` }}
                   className={`absolute inset-y-0 left-0 ${theme.progress} transition-all duration-1000 ease-out shadow-[0_0_20px_rgba(0,0,0,0.1)]`}
                 >
