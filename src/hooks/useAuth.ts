@@ -1,20 +1,17 @@
-import { useState, useEffect } from "react";
-import { LoginSchema, UserSchema, type User, type LoginFormData, type LoginResult } from "../models";
+import { useState } from 'react';
+import { LoginSchema, UserSchema, type User, type LoginFormData, type LoginResult } from '../models';
 
 const STORAGE_KEY = 'loyalty_pulse_user';
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
         const validated = UserSchema.parse(parsed);
-        setUser(validated);
+        return validated;
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error('Invalid stored user:', err.message);
@@ -22,14 +19,18 @@ export function useAuth() {
         localStorage.removeItem(STORAGE_KEY);
       }
     }
-    setLoading(false);
-  }, [])
+    return null;
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const login = (credentials: LoginFormData): LoginResult => {
+    setLoading(true);
     try {
       const result = LoginSchema.safeParse(credentials);
       if (!result.success) {
-        return { success: false, error: result.error };
+        return { success: false, error: result.error.message };
       }
 
       const validated = result.data as LoginFormData;
@@ -46,22 +47,24 @@ export function useAuth() {
       setError(null);
       return { success: true, user: mockUser };
     } catch (err: unknown) {
-      const error = err instanceof Error ? err : new Error('Login failed');
+      const error = err instanceof Error ? err.message : 'Login failed';
       return { success: false, error };
+    } finally {
+      setLoading(false);
     }
-  }
-  
+  };
+
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
     setError(null);
-  }
+  };
 
   return {
     user,
     loading,
     error,
     login,
-    logout
-  }
+    logout,
+  };
 }
