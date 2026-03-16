@@ -105,8 +105,8 @@ export const MembersFilter = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">Apply Filter</button>
-          <button className="px-4 py-2 bg-slate-500 text-white rounded-lg">Reset Filter</button>
+          <button onClick={handleApplyFilter} className="px-4 py-2 bg-blue-500 text-white rounded-lg">Apply Filter</button>
+          <button onClick={handleResetFilter} className="px-4 py-2 bg-slate-500 text-white rounded-lg">Reset Filter</button>
         </div>
       </div>
     </div>
