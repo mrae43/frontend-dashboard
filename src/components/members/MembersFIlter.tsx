@@ -8,6 +8,7 @@ interface OptionType {
 
 export interface MembersFilterValues {
   tier: OptionType;
+  status: OptionType;
 }
 
 interface MembersFilterProps {
@@ -80,6 +81,7 @@ const getOptionByValue = (options: OptionType[], value: string) =>
 export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
   const [activeFilters, setActiveFilters] = useState<MembersFilterValues>({
     tier: getOptionByValue(optionsTier, 'All'),
+    status: getOptionByValue(optionsStatus, 'All'),
   });
   const handleApplyFilter = () => {
     onApply(activeFilters);
@@ -88,6 +90,7 @@ export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
   const handleResetFilter = () => {
     setActiveFilters({
       tier: getOptionByValue(optionsTier, 'All'),
+      status: getOptionByValue(optionsStatus, 'All'),
     });
     onReset();
   };
@@ -110,8 +113,8 @@ export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
               styles={customStyles}
               placeholder="Status (All)"
               isSearchable={false}
-              value={activeFilters.tier}
-              onChange={(e) => setActiveFilters({ ...activeFilters, tier: getOptionByValue(optionsTier, e?.value || 'All') })}
+              value={activeFilters.status}
+              onChange={(e) => setActiveFilters({ ...activeFilters, status: getOptionByValue(optionsStatus, e?.value || 'All') })}
             />
             <Select
               options={optionsSortBy}
