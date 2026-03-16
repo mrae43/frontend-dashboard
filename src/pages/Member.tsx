@@ -5,12 +5,14 @@ import { MOCK_MEMBERS } from '../utils/mock/members';
 import { MembersTable } from '../components/members/MembersTable';
 import type { MemberListItem } from '../models/member';
 import { MembersFilter, type MembersFilterValues } from '../components/members/MembersFIlter';
+import { compareMembers } from '../utils/sort';
 
 const MemberPage = () => {
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<MembersFilterValues>({
     tier: { value: 'All', label: 'Loyalty Tier (All)' },
     status: { value: 'All', label: 'Status (All)' },
+    sortBy: { value: 'name_asc', label: 'Name (A-Z)' },
   });
 
   const members: MemberListItem[] = useMemo(() => {
@@ -41,7 +43,8 @@ const MemberPage = () => {
           memberSince: member.joinDate,
           status: member.status,
         };
-      });
+      })
+      .sort((a, b) => compareMembers(a, b, filters.sortBy.value));
   }, [search, filters]);
 
   return (
@@ -62,6 +65,7 @@ const MemberPage = () => {
           onReset={() => setFilters({
             tier: { value: 'All', label: 'Loyalty Tier (All)' },
             status: { value: 'All', label: 'Status (All)' },
+            sortBy: { value: 'name_asc', label: 'Name (A-Z)' },
           })} 
         />
         <MembersTable members={members} />

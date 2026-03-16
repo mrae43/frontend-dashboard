@@ -9,6 +9,7 @@ interface OptionType {
 export interface MembersFilterValues {
   tier: OptionType;
   status: OptionType;
+  sortBy: OptionType;
 }
 
 interface MembersFilterProps {
@@ -66,13 +67,14 @@ const optionsStatus = [
 ];
 
 const optionsSortBy = [
-  { value: 'All', label: 'Sort By (All)' },
-  { value: 'name', label: 'Sort By (Name)' },
-  { value: 'email', label: 'Sort By (Email)' },
-  { value: 'tier', label: 'Sort By (Tier)' },
-  { value: 'points', label: 'Sort By (Points)' },
-  { value: 'lastActivity', label: 'Sort By (Last Activity)' },
-  { value: 'memberSince', label: 'Sort By (Member Since)' },
+  { value: 'name_asc', label: 'Name (A-Z)' },
+  { value: 'name_desc', label: 'Name (Z-A)' },
+  { value: 'points_desc', label: 'Points (High to Low)' },
+  { value: 'points_asc', label: 'Points (Low to High)' },
+  { value: 'lastActivity_desc', label: 'Last Activity (Newest)' },
+  { value: 'lastActivity_asc', label: 'Last Activity (Oldest)' },
+  { value: 'memberSince_desc', label: 'Member Since (Newest)' },
+  { value: 'memberSince_asc', label: 'Member Since (Oldest)' },
 ];
 
 const getOptionByValue = (options: OptionType[], value: string) => 
@@ -82,16 +84,19 @@ export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
   const [activeFilters, setActiveFilters] = useState<MembersFilterValues>({
     tier: getOptionByValue(optionsTier, 'All'),
     status: getOptionByValue(optionsStatus, 'All'),
+    sortBy: getOptionByValue(optionsSortBy, 'name_asc'),
   });
   const handleApplyFilter = () => {
     onApply(activeFilters);
   };
 
   const handleResetFilter = () => {
-    setActiveFilters({
+    const defaultFilters = {
       tier: getOptionByValue(optionsTier, 'All'),
       status: getOptionByValue(optionsStatus, 'All'),
-    });
+      sortBy: getOptionByValue(optionsSortBy, 'name_asc'),
+    };
+    setActiveFilters(defaultFilters);
     onReset();
   };
   return (
@@ -103,7 +108,6 @@ export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
             <Select
               options={optionsTier}
               styles={customStyles}
-              placeholder="Loyalty Tier (All)"
               isSearchable={false}
               value={activeFilters.tier}
               onChange={(e) => setActiveFilters({ ...activeFilters, tier: getOptionByValue(optionsTier, e?.value || 'All') })}
@@ -111,7 +115,6 @@ export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
             <Select
               options={optionsStatus}
               styles={customStyles}
-              placeholder="Status (All)"
               isSearchable={false}
               value={activeFilters.status}
               onChange={(e) => setActiveFilters({ ...activeFilters, status: getOptionByValue(optionsStatus, e?.value || 'All') })}
@@ -119,10 +122,9 @@ export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
             <Select
               options={optionsSortBy}
               styles={customStyles}
-              placeholder="Sort By (All)"
               isSearchable={false}
-              value={activeFilters.tier}
-              onChange={(e) => setActiveFilters({ ...activeFilters, tier: getOptionByValue(optionsTier, e?.value || 'All') })}
+              value={activeFilters.sortBy}
+              onChange={(e) => setActiveFilters({ ...activeFilters, sortBy: getOptionByValue(optionsSortBy, e?.value || 'name_asc') })}
             />
           </div>
         </div>
