@@ -1,0 +1,101 @@
+import Select, { type StylesConfig } from 'react-select';
+
+interface OptionType {
+  value: string;
+  label: string;
+}
+
+const customStyles: StylesConfig<OptionType, false> = {
+  control: (base, state) => ({
+    ...base,
+    borderRadius: '0.75rem', // Matches your rounded-xl/2xl style
+    padding: '2px 8px',
+    borderColor: state.isFocused ? '#94a3b8' : '#e2e8f0', // slate-400 vs slate-200
+    boxShadow: 'none',
+    '&:hover': {
+      borderColor: '#cbd5e1', // slate-300
+    },
+    backgroundColor: 'white',
+    fontSize: '14px',
+    fontWeight: '500',
+    color: '#1e293b', // slate-900
+  }),
+  option: (base, state) => ({
+    ...base,
+    backgroundColor: state.isFocused ? '#f8fafc' : 'white', // slate-50
+    color: '#1e293b',
+    fontSize: '14px',
+    cursor: 'pointer',
+    '&:active': {
+      backgroundColor: '#f1f5f9',
+    },
+  }),
+  menu: (base) => ({
+    ...base,
+    borderRadius: '0.75rem',
+    overflow: 'hidden',
+    boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', // shadow-lg
+    border: '1px solid #e2e8f0',
+  }),
+};
+
+const optionsTier = [
+  { value: 'All', label: 'Loyalty Tier (All)' },
+  { value: 'BRONZE', label: 'Loyalty Tier (Bronze)' },
+  { value: 'SILVER', label: 'Loyalty Tier (Silver)' },
+  { value: 'GOLD', label: 'Loyalty Tier (Gold)' },
+  { value: 'PLATINUM', label: 'Loyalty Tier (Platinum)' },
+];
+
+const optionsStatus = [
+  { value: 'All', label: 'Status (All)' },
+  { value: 'active', label: 'Status (Active)' },
+  { value: 'flagged', label: 'Status (Flagged)' },
+  { value: 'inactive', label: 'Status (Inactive)' },
+];
+
+const optionsSortBy = [
+  { value: 'All', label: 'Sort By (All)' },
+  { value: 'name', label: 'Sort By (Name)' },
+  { value: 'email', label: 'Sort By (Email)' },
+  { value: 'tier', label: 'Sort By (Tier)' },
+  { value: 'points', label: 'Sort By (Points)' },
+  { value: 'lastActivity', label: 'Sort By (Last Activity)' },
+  { value: 'memberSince', label: 'Sort By (Member Since)' },
+];
+
+export const MembersFilter = () => {
+  return (
+    <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-4">
+      <div className="flex items-center gap-2">
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <p className="text-md text-slate-900 font-bold mb-2">Advanced Filter:</p>
+            <Select
+              options={optionsTier}
+              styles={customStyles}
+              placeholder="Loyalty Tier (All)"
+              isSearchable={false}
+            />
+            <Select
+              options={optionsStatus}
+              styles={customStyles}
+              placeholder="Status (All)"
+              isSearchable={false}
+            />
+            <Select
+              options={optionsSortBy}
+              styles={customStyles}
+              placeholder="Sort By (All)"
+              isSearchable={false}
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">Apply Filter</button>
+          <button className="px-4 py-2 bg-slate-500 text-white rounded-lg">Reset Filter</button>
+        </div>
+      </div>
+    </div>
+  );
+};
