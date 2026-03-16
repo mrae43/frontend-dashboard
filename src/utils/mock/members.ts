@@ -10,6 +10,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'BRONZE',
     joinDate: '2024-05-15T10:00:00Z',
     lastVisit: '2024-03-10T14:30:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174001',
@@ -20,6 +21,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'SILVER',
     joinDate: '2023-11-20T09:15:00Z',
     lastVisit: '2024-03-12T11:45:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174002',
@@ -30,6 +32,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'GOLD',
     joinDate: '2022-08-01T16:40:00Z',
     lastVisit: '2024-03-11T08:20:00Z',
+    status: 'flagged',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174003',
@@ -40,6 +43,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'PLATINUM',
     joinDate: '2021-01-12T12:00:00Z',
     lastVisit: '2024-03-12T09:00:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174004',
@@ -50,6 +54,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'BRONZE',
     joinDate: '2024-01-15T08:30:00Z',
     lastVisit: '2024-03-14T15:20:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174005',
@@ -60,6 +65,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'SILVER',
     joinDate: '2023-09-10T11:45:00Z',
     lastVisit: '2024-03-15T10:10:00Z',
+    status: 'flagged',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174006',
@@ -67,9 +73,10 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     email: 'olivia.t@example.com',
     spendablePoints: 2800,
     tierXP: 3100,
-    tier: 'GOLD',
+    tier: 'GOLD', 
     joinDate: '2022-12-05T14:20:00Z',
     lastVisit: '2024-03-13T16:45:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174007',
@@ -80,6 +87,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'PLATINUM',
     joinDate: '2021-06-20T09:00:00Z',
     lastVisit: '2024-03-15T14:30:00Z',
+    status: 'inactive',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174008',
@@ -90,6 +98,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'BRONZE',
     joinDate: '2023-10-25T13:15:00Z',
     lastVisit: '2024-03-12T11:20:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174009',
@@ -100,6 +109,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'SILVER',
     joinDate: '2023-05-18T10:40:00Z',
     lastVisit: '2024-03-16T09:15:00Z',
+    status: 'inactive',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174010',
@@ -110,6 +120,7 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'GOLD',
     joinDate: '2022-03-12T15:50:00Z',
     lastVisit: '2024-03-14T12:30:00Z',
+    status: 'active',
   },
   {
     id: 'e1234567-e89b-12d3-a456-426614174011',
@@ -120,5 +131,6 @@ export const MOCK_MEMBERS: LoyaltyMember[] = [
     tier: 'PLATINUM',
     joinDate: '2020-08-30T08:00:00Z',
     lastVisit: '2024-03-15T17:40:00Z',
+    status: 'flagged',
   },
 ];
