@@ -6,6 +6,15 @@ interface OptionType {
   label: string;
 }
 
+export interface MembersFilterValues {
+  tier: OptionType;
+}
+
+interface MembersFilterProps {
+  onApply: (filters: MembersFilterValues) => void;
+  onReset: () => void;
+}
+
 const customStyles: StylesConfig<OptionType, false> = {
   control: (base, state) => ({
     ...base,
@@ -65,18 +74,22 @@ const optionsSortBy = [
   { value: 'memberSince', label: 'Sort By (Member Since)' },
 ];
 
-export const MembersFilter = () => {
+const getOptionByValue = (options: OptionType[], value: string) => 
+  options.find(opt => opt.value === value) || options[0];
 
-  const [tier, setTier] = useState('All');
-  const [status, setStatus] = useState('All');
-  const [sortBy, setSortBy] = useState('All');
-
+export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
+  const [activeFilters, setActiveFilters] = useState<MembersFilterValues>({
+    tier: optionsTier[0],
+  });
   const handleApplyFilter = () => {
-    console.log('Apply Filter');
+    onApply(activeFilters);
   };
 
   const handleResetFilter = () => {
-    console.log('Reset Filter');
+    setActiveFilters({
+      tier: getOptionByValue(optionsTier, 'All'),
+    });
+    onReset();
   };
   return (
     <div className="bg-white border border-slate-200 shadow-sm rounded-2xl p-4">
@@ -89,18 +102,24 @@ export const MembersFilter = () => {
               styles={customStyles}
               placeholder="Loyalty Tier (All)"
               isSearchable={false}
+              value={activeFilters.tier}
+              onChange={(e) => setActiveFilters({ ...activeFilters, tier: getOptionByValue(optionsTier, e?.value || 'All') })}
             />
             <Select
               options={optionsStatus}
               styles={customStyles}
               placeholder="Status (All)"
               isSearchable={false}
+              value={activeFilters.tier}
+              onChange={(e) => setActiveFilters({ ...activeFilters, tier: getOptionByValue(optionsTier, e?.value || 'All') })}
             />
             <Select
               options={optionsSortBy}
               styles={customStyles}
               placeholder="Sort By (All)"
               isSearchable={false}
+              value={activeFilters.tier}
+              onChange={(e) => setActiveFilters({ ...activeFilters, tier: getOptionByValue(optionsTier, e?.value || 'All') })}
             />
           </div>
         </div>
