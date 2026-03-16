@@ -33,7 +33,9 @@ const MemberDetail = () => {
       <div className="flex items-center gap-2 text-sm text-slate-500 mb-2">
         <Link to="/" className="hover:text-blue-600 transition-colors">Dashboard</Link>
         <span>/</span>
-        <span className="font-semibold text-slate-900">Member Profile</span>
+        <Link to="/members" className="hover:text-blue-600 transition-colors">Members</Link>
+        <span>/</span>
+        <span className="font-semibold text-slate-900">{member.name}'s Profile</span>
       </div>
 
       <IdentityHeader member={member} />

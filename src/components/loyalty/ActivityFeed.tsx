@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { type PointsTransaction, type TransactionType } from '../../models/loyalty';
 import { PointDisplay } from './PointDisplay';
 import { getBadgeStyles } from '../../utils/style';
-import { SearchTransaction } from './SearchTransaction';
+import { SearchInput } from '../SearchInput';
 
 interface ActivityFeedProps {
   transactions: PointsTransaction[];
@@ -63,16 +63,7 @@ export const ActivityFeed = ({ transactions }: ActivityFeedProps) => {
           <h3 className="text-lg font-bold text-slate-900">Activity History</h3>
           <p className="text-sm text-slate-500">Live feed of point transactions</p>
         </div>
-        <SearchTransaction search={search} setSearch={setSearch} />
-        <span
-          data-testid="transaction-count-badge"
-          className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-bold uppercase tracking-wider"
-        >
-          {search
-            ? `${filteredTransactions.length} found`
-            : `${transactions.length} total`
-          }
-        </span>
+        <SearchInput search={search} setSearch={setSearch} placeholder="transactions" filtered={filteredTransactions.length} total={transactions.length}/>
       </div>
 
       <div className="overflow-x-auto">
