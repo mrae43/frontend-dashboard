@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { MOCK_MEMBERS } from '../utils/mock/members';
 import { MembersTable } from '../components/members/MembersTable';
 import type { MemberListItem } from '../models/member';
+import { MembersFilter } from '../components/members/MembersFIlter';
 
 const MemberPage = () => {
   const [search, setSearch] = useState('');
@@ -47,6 +48,7 @@ const MemberPage = () => {
         </div>
       </div>
       <div>
+        <MembersFilter />
         <MembersTable members={members} />
       </div>
     </div>
