@@ -4,14 +4,26 @@ import { useMemo, useState } from 'react';
 import { MOCK_MEMBERS } from '../utils/mock/members';
 import { MembersTable } from '../components/members/MembersTable';
 import type { MemberListItem } from '../models/member';
+import { MembersFilter, type MembersFilterValues } from '../components/members/MembersFIlter';
+import { compareMembers } from '../utils/sort';
 
 const MemberPage = () => {
   const [search, setSearch] = useState('');
+  const [filters, setFilters] = useState<MembersFilterValues>({
+    tier: { value: 'All', label: 'Loyalty Tier (All)' },
+    status: { value: 'All', label: 'Status (All)' },
+    sortBy: { value: 'name_asc', label: 'Name (A-Z)' },
+  });
 
   const members: MemberListItem[] = useMemo(() => {
     const defaultDate = new Date().toISOString();
     return MOCK_MEMBERS
-      .filter(member => member.name.toLowerCase().includes(search.toLowerCase()))
+      .filter(member => {
+        const matchesSearch = member.name.toLowerCase().includes(search.toLowerCase());
+        const matchesTier = filters.tier.value === 'All' || member.tier === filters.tier.value;
+        const matchesStatus = filters.status.value === 'All' || member.status === filters.status.value;
+        return matchesSearch && matchesTier && matchesStatus;
+      })
       .map(member => {
         // Mock calculations for xp progress and status based on available logic
         let xpProgress = 0;
@@ -29,10 +41,11 @@ const MemberPage = () => {
           xpProgress,
           lastActivity: member.lastVisit || defaultDate,
           memberSince: member.joinDate,
-          status: 'active', // Default mock status
+          status: member.status,
         };
-      });
-  }, [search]);
+      })
+      .sort((a, b) => compareMembers(a, b, filters.sortBy.value));
+  }, [search, filters]);
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -47,6 +60,14 @@ const MemberPage = () => {
         </div>
       </div>
       <div>
+        <MembersFilter 
+          onApply={(newFilters) => setFilters(newFilters)} 
+          onReset={() => setFilters({
+            tier: { value: 'All', label: 'Loyalty Tier (All)' },
+            status: { value: 'All', label: 'Status (All)' },
+            sortBy: { value: 'name_asc', label: 'Name (A-Z)' },
+          })} 
+        />
         <MembersTable members={members} />
       </div>
     </div>

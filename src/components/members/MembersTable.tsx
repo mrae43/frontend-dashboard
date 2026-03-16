@@ -82,7 +82,7 @@ export const MembersTable = ({ members }: MembersTableProps) => {
                     <div className="flex flex-col gap-1 w-24">
                       <span className="font-medium text-slate-900">{member.points.toLocaleString()} pts</span>
                       <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                        <div 
+                        <div
                           className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
                           style={{ width: `${member.xpProgress}%` }}
                         />
@@ -101,7 +101,7 @@ export const MembersTable = ({ members }: MembersTableProps) => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
-                    <Link 
+                    <Link
                       to={`/members/${member.id}`}
                       className="inline-flex items-center justify-center w-8 h-8 rounded-lg text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                     >

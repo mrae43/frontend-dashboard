@@ -32,7 +32,7 @@ test.describe('RBAC Verification (Bypassing Login)', () => {
     await expect(page.locator('text=Member Analytics Under Construction')).toBeVisible();
 
     await page.goto('/members');
-    await expect(page.locator('text=Member Management Under Construction')).toBeVisible();
+    await expect(page.getByText('Loyalty Tier (All)')).toBeVisible();
 
     await page.goto('/rewards');
     await expect(page.locator('text=Rewards Management Under Construction')).toBeVisible();

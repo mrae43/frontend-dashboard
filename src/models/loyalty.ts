@@ -12,6 +12,7 @@ export const LoyaltyMemberSchema = z.object({
   tier: LoyaltyTierSchema,
   joinDate: z.iso.datetime(),
   lastVisit: z.iso.datetime().optional(),
+  status: z.enum(['active', 'flagged', 'inactive']),
 });
 
 export type LoyaltyMember = z.infer<typeof LoyaltyMemberSchema>;
