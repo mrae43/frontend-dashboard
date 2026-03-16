@@ -79,7 +79,7 @@ const getOptionByValue = (options: OptionType[], value: string) =>
 
 export const MembersFilter = ({ onApply, onReset }: MembersFilterProps) => {
   const [activeFilters, setActiveFilters] = useState<MembersFilterValues>({
-    tier: optionsTier[0],
+    tier: getOptionByValue(optionsTier, 'All'),
   });
   const handleApplyFilter = () => {
     onApply(activeFilters);
