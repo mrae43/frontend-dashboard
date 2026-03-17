@@ -150,8 +150,8 @@ export default function DashboardLayout() {
           </div>
         </header>
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-8 bg-slate-50/50">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 overflow-y-auto p-8 bg-slate-50/50 flex flex-col">
+          <div className="max-w-7xl mx-auto w-full flex-1 flex flex-col min-h-0">
             <Outlet />
           </div>
         </main>
