@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { SearchInput } from '../components/SearchInput';
 import { useMemo, useState } from 'react';
 import { MOCK_MEMBERS } from '../utils/mock/members';
@@ -6,8 +6,13 @@ import { MembersTable } from '../components/members/MembersTable';
 import type { MemberListItem } from '../models/member';
 import { MembersFilter, type MembersFilterValues } from '../components/members/MembersFIlter';
 import { compareMembers } from '../utils/sort';
+import { Pagination } from '../components/Pagination';
 
 const MemberPage = () => {
+  const [searchParams] = useSearchParams();
+  const limit = parseInt(searchParams.get("limit") || "10", 10);
+  const offset = parseInt(searchParams.get("offset") || "0", 10);
+
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<MembersFilterValues>({
     tier: { value: 'All', label: 'Loyalty Tier (All)' },
@@ -47,10 +52,14 @@ const MemberPage = () => {
       .sort((a, b) => compareMembers(a, b, filters.sortBy.value));
   }, [search, filters]);
 
+  const paginatedMembers = useMemo(() => {
+    return members.slice(offset, offset + limit);
+  }, [members, offset, limit]);
+
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+    <div className="h-full flex flex-col space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 shrink-0">
+        <div className="flex items-center gap-1 text-sm text-slate-500">
           <Link to="/" className="hover:text-blue-600 transition-colors">Dashboard</Link>
           <span>/</span>
           <span className="font-semibold text-slate-900">Members</span>
@@ -59,16 +68,25 @@ const MemberPage = () => {
           <SearchInput search={search} setSearch={setSearch} placeholder="members" filtered={members.length} total={MOCK_MEMBERS.length}/>
         </div>
       </div>
-      <div>
-        <MembersFilter 
-          onApply={(newFilters) => setFilters(newFilters)} 
-          onReset={() => setFilters({
-            tier: { value: 'All', label: 'Loyalty Tier (All)' },
-            status: { value: 'All', label: 'Status (All)' },
-            sortBy: { value: 'name_asc', label: 'Name (A-Z)' },
-          })} 
-        />
-        <MembersTable members={members} />
+      <div className="flex flex-col flex-1 min-h-0 gap-4">
+        <div className="shrink-0">
+          <MembersFilter 
+            onApply={(newFilters) => setFilters(newFilters)} 
+            onReset={() => setFilters({
+              tier: { value: 'All', label: 'Loyalty Tier (All)' },
+              status: { value: 'All', label: 'Status (All)' },
+              sortBy: { value: 'name_asc', label: 'Name (A-Z)' },
+            })} 
+          />
+        </div>
+        <div className="flex flex-col gap-2 flex-1 min-h-0">
+          <div className="flex-1 min-h-0">
+            <MembersTable members={paginatedMembers} />
+          </div>
+          <div className="shrink-0">
+            <Pagination totalItems={members.length} />
+          </div>
+        </div>
       </div>
     </div>
   );
