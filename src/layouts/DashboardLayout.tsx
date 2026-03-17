@@ -79,7 +79,7 @@ export default function DashboardLayout() {
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 shadow-sm z-0">
           <div className="flex items-center">
             <h1 className="text-xl font-semibold text-slate-800">
-              {navItems.find(i => i.path === location.pathname)?.name || 'Dashboard'}
+              {navItems.find(i => location.pathname === i.path || (location.pathname.startsWith(i.path) && i.path !== '/'))?.name || 'Dashboard'}
             </h1>
           </div>
           <div className="flex items-center gap-4">
