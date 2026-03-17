@@ -35,10 +35,10 @@ export const MembersTable = ({ members }: MembersTableProps) => {
   }
 
   return (
-    <div className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-slate-600">
-          <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200 uppercase text-xs tracking-wider">
+    <div className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden flex flex-col h-full min-h-0">
+      <div className="overflow-x-auto overflow-y-auto flex-1 min-h-0">
+        <table className="w-full text-left text-sm text-slate-600 relative">
+          <thead className="bg-slate-50 text-slate-500 font-medium border-b border-slate-200 uppercase text-xs tracking-wider sticky top-0 z-10 shadow-sm">
             <tr>
               <th scope="col" className="px-6 py-4 rounded-tl-2xl">Member</th>
               <th scope="col" className="px-6 py-4">Loyalty Tier</th>
@@ -49,7 +49,7 @@ export const MembersTable = ({ members }: MembersTableProps) => {
               <th scope="col" className="px-6 py-4 text-center rounded-tr-2xl">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100 bg-white">
             {members.map((member) => {
               const joinDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(member.memberSince));
               const activeDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(new Date(member.lastActivity));
